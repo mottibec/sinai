@@ -35,9 +35,11 @@ def send_email(max_out):
 def main():
     FORMAT = '%(asctime)s - %(levelname)s - %(message)s'
     logging.basicConfig(format=FORMAT, level=logging.INFO)
-    while get_max_out() == current_max:
+    max_out = get_max_out()
+    while max_out == current_max:
         time.sleep(10)
-    send_email(get_max_out())
+        max_out = get_max_out()
+    send_email(max_out)
 
 
 main()
