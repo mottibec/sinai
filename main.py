@@ -9,10 +9,11 @@ current_max = "600"
 
 
 def get_max_out():
-    logging.info("getting max requests")
+    logging.info("getting max out")
     page = pq(url="https://borderpay.metropolinet.co.il/order-page")
     taba_option = page("#BoarderName option[value='1061']")
-    return taba_option.attr("max-out-for-day")
+    max_out = taba_option.attr("max-out-for-day")
+    logging.info(f"got max_out of{max_out}")
 
 
 def get_api_key():
@@ -28,9 +29,7 @@ def send_email(max_out):
         "text/plain",  f"ALERT number of sinai max out has changed to {max_out}")
     mail = Mail(from_email, to_email, subject, content)
     response = sg.client.mail.send.post(request_body=mail.get())
-    print(response.status_code)
-    print(response.body)
-    print(response.headers)
+    logging.info(response.status_code)
 
 
 def main():
