@@ -13,7 +13,8 @@ def get_max_out():
     page = pq(url="https://borderpay.metropolinet.co.il/order-page")
     taba_option = page("#BoarderName option[value='1061']")
     max_out = taba_option.attr("max-out-for-day")
-    logging.info(f"got max_out of{max_out}")
+    logging.info(f"got max_out of {max_out}")
+    return max_out
 
 
 def get_api_key():
