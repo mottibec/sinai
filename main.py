@@ -1,5 +1,6 @@
 import time
 import logging
+import os
 from pyquery import PyQuery as pq
 import sendgrid
 from sendgrid.helpers.mail import *
@@ -17,18 +18,17 @@ def get_max_out():
     return max_out
 
 
-def get_api_key():
-    return "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"
+def get_env(key):
+    return os.environ.get(key)
 
 
 def send_email(max_out):
-    sg = sendgrid.SendGridAPIClient(api_key=get_api_key())
-    from_email = Email("mybechhofer@gmail.com")
-    to_email = To("mybechhofer@gmail.com")
-    subject = f"ALERT number of sinai max out has changed to {max_out}"
-    content = Content(
-        "text/plain",  f"ALERT number of sinai max out has changed to {max_out}")
-    mail = Mail(from_email, to_email, subject, content)
+    sg = sendgrid.SendGridAPIClient(api_key=get_env("SENDGRID_API_KEY"))
+    from_email = Email(get_env("SENDER_EMAIL"))
+    to_email = To(get_env("RECEIVER_EMAIL"))
+    text = f"ALERT, the number of sinai max out has changed to {max_out}"
+    content = Content("text/plain",  text)
+    mail = Mail(from_email, to_email, text, content)
     response = sg.client.mail.send.post(request_body=mail.get())
     logging.info(response.status_code)
 
